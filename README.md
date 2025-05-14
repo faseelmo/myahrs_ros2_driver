@@ -30,14 +30,6 @@ cd ~/myahrs_ws/
 colcon build
 ```
 
-### Install visualization_tutorials
-
-Users can use the RVIZ2 visualization package:
-
-```sh
-git clone -b clobot-devel --single-branch https://github.com/clobot-git/visualization_tutorials.git
-```
-
 ## Run
 
 First, serial port(/dev/ttyACM0) permissions must be granted to the /root.
@@ -48,4 +40,3 @@ Run the following command:
 ros2 launch myahrs_ros2_driver myahrs_ros2_driver.launch.py
 ```
 
-<img align="center" src="images/test_image.jpg" width=500>
