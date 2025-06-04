@@ -68,6 +68,7 @@ private:
   bool publish_tf_;
   std::string parent_frame_id_;
   std::string frame_id_;
+  
   double linear_acceleration_stddev_;
   double angular_velocity_stddev_;
   double magnetic_field_stddev_;

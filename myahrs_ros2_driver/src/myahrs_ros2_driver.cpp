@@ -23,6 +23,7 @@ namespace WithRobot
   {
     // dependent on user device
     publish_tf_ = false;
+
     frame_id_ = "imu_link";
     parent_frame_id_ = "base_link";
 
@@ -30,11 +31,16 @@ namespace WithRobot
     this->declare_parameter("angular_velocity_stddev", angular_velocity_stddev_);
     this->declare_parameter("magnetic_field_stddev", magnetic_field_stddev_);
     this->declare_parameter("orientation_stddev", orientation_stddev_);
+    this->declare_parameter("parent_frame_id", parent_frame_id_);
+    this->declare_parameter("frame_id", frame_id_);
+    this->declare_parameter("publish_tf", publish_tf_);
 
     this->get_parameter("linear_acceleration_stddev", linear_acceleration_stddev_);
     this->get_parameter("angular_velocity_stddev", angular_velocity_stddev_);
     this->get_parameter("magnetic_field_stddev", magnetic_field_stddev_);
-    this->get_parameter("orientation_stddev", orientation_stddev_);
+    this->get_parameter("parent_frame_id", parent_frame_id_);
+    this->get_parameter("frame_id", frame_id_);
+    this->get_parameter("publish_tf", publish_tf_);
 
     // publisher for streaming
     imu_data_raw_pub_ = this->create_publisher<sensor_msgs::msg::Imu>(
@@ -202,13 +208,14 @@ namespace WithRobot
     imu_mag_pub_->publish(std::move(imu_magnetic_msg));
     imu_temperature_pub_->publish(std::move(imu_temperature_msg));
 
-    // publish tf
+    // Publish transform from parent_frame_id_ to frame_id_
+    // with zero translation; orientation from IMU data.
     if (publish_tf_)
     {
       geometry_msgs::msg::TransformStamped tf;
       tf.header.stamp = now;
-      tf.header.frame_id = parent_frame_id_;
-      tf.child_frame_id = frame_id_;
+      tf.header.frame_id = parent_frame_id_; // base_link
+      tf.child_frame_id = frame_id_; // imu_link
       tf.transform.translation.x = 0.0;
       tf.transform.translation.y = 0.0;
       tf.transform.translation.z = 0.0;
